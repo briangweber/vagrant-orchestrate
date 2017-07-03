@@ -99,14 +99,14 @@ module VagrantPlugins
               # A single canary server and then the rest
               result = deploy(options, machines.take(1), machines.drop(1))
             when :half_half
-              # Split into two (almost) equal groups
+              # Split into two (almost) equal groups - start with the second group in case this is the first deployment to new instances
               groups = split(machines)
-              result = deploy(options, groups.first, groups.last)
+              result = deploy(options, groups.last, groups.first)
             when :canary_half_half
-              # A single canary and then two equal groups
+              # A single canary and then two equal groups - start with the second group in case this is the first deployment to new instances
               canary = machines.take(1)
               groups = split(machines.drop(1))
-              result = deploy(options, canary, groups.first, groups.last)
+              result = deploy(options, canary, groups.last, groups.first)
             else
               @env.ui.error("Invalid deployment strategy specified")
               result = false
